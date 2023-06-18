@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+
+// css restore
+* {
+  font-family: "Lato", sans-serif;
+  letter-spacing: 1px;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  user-select: none;
+}
+img{
+  -webkit-user-drag: none;
+}
+// scroll bar color change
+::-webkit-scrollbar {
+  height: 4px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #38A169;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-track {
+  background-color: silver;
+}
+
+// **************************** components
+
+
+
+// **************************** overrides
+
+
+
+// **************************** utils
+.ff-secondary{
+  font-family: 'Kaushan Script', cursive;
+}
