@@ -12,6 +12,10 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  Container,
+  BreadcrumbLink,
+  BreadcrumbItem,
+  Breadcrumb,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -97,43 +101,37 @@ export default function Page() {
       <Head>
         <title>Tiffin | Sign up</title>
       </Head>
-      <Flex
+      <Stack
         minH={"100vh"}
         align={"center"}
         justify={"center"}
         bg={useColorModeValue("gray.50", "gray.800")}
+        maxW={"100vw"}
+        overflowX={"hidden"}
       >
-        {!coordinates ? (
-          <Stack
-            as={"form"}
-            onSubmit={formik.handleSubmit}
-            spacing={8}
-            mx={"auto"}
-            maxW={"lg"}
-            py={12}
-            px={6}
+        <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+          <Stack align={"center"}>
+            <Heading fontSize={"4xl"} textAlign={"center"}>
+              Sign up
+            </Heading>
+            <Text fontSize={"lg"} color={"gray.600"}>
+              to enjoy all of our cool features 🍜
+            </Text>
+          </Stack>
+          <Box
+            rounded={"lg"}
+            bg={useColorModeValue("white", "gray.700")}
+            boxShadow={"lg"}
+            p={8}
           >
-            <Stack align={"center"}>
-              <Heading fontSize={"4xl"} textAlign={"center"}>
-                Sign up
-              </Heading>
-              <Text fontSize={"lg"} color={"gray.600"}>
-                to enjoy all of our cool features 🍜
-              </Text>
-            </Stack>
-            <Box
-              rounded={"lg"}
-              bg={useColorModeValue("white", "gray.700")}
-              boxShadow={"lg"}
-              p={8}
-            >
-              <Stack spacing={4}>
+            {!coordinates ? (
+              <Stack spacing={4} as={"form"} onSubmit={formik.handleSubmit}>
                 <HStack>
                   <Box>
                     <FormControl id="firstName">
                       <FormLabel>Name</FormLabel>
                       <Input
-                        _focus={{ borderColor: "green" }}
+                        _focus={{ borderColor: "green", boxShadow: "none" }}
                         type="text"
                         {...formik.getFieldProps("name")}
                       />
@@ -148,7 +146,7 @@ export default function Page() {
                     <FormControl id="lastName">
                       <FormLabel>Phone</FormLabel>
                       <Input
-                        _focus={{ borderColor: "green" }}
+                        _focus={{ borderColor: "green", boxShadow: "none" }}
                         type="text"
                         {...formik.getFieldProps("phone")}
                       />
@@ -163,7 +161,7 @@ export default function Page() {
                 <FormControl id="email">
                   <FormLabel>Email address</FormLabel>
                   <Input
-                    _focus={{ borderColor: "green" }}
+                    _focus={{ borderColor: "green", boxShadow: "none" }}
                     type="email"
                     {...formik.getFieldProps("email")}
                   />
@@ -177,7 +175,7 @@ export default function Page() {
                   <FormLabel>Password</FormLabel>
                   <InputGroup>
                     <Input
-                      _focus={{ borderColor: "green" }}
+                      _focus={{ borderColor: "green", boxShadow: "none" }}
                       type={showPassword ? "text" : "password"}
                       {...formik.getFieldProps("password")}
                     />
@@ -202,7 +200,7 @@ export default function Page() {
                 <FormControl id="deliveryAddress">
                   <FormLabel>Delivery Address</FormLabel>
                   <Input
-                    _focus={{ borderColor: "green" }}
+                    _focus={{ borderColor: "green", boxShadow: "none" }}
                     type="tetxt"
                     {...formik.getFieldProps("deliveryAddress")}
                   />
@@ -234,32 +232,44 @@ export default function Page() {
                   </Text>
                 </Stack>
               </Stack>
-            </Box>
-          </Stack>
-        ) : (
-          <Stack maxW={600} direction="column" gap={4} py={12} px={6}>
-            <Heading size="lg" fontWeight={400}>
-              Pick your Exact Delivery Location
-            </Heading>
-            <SelLocation
-              coordinates={coordinates}
-              setCoordinates={setCoordinates}
-            />
-            <Stack spacing={10} pt={2}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                colorScheme="green"
-                type="button"
-                onClick={register}
-                isLoading={loading}
-              >
-                Sign up
-              </Button>
-            </Stack>
-          </Stack>
-        )}
-      </Flex>
+            ) : (
+              <Stack maxW={600} direction="column" gap={4}>
+                <Text>Pick your exact office address, for daily delivery</Text>
+                <SelLocation
+                  coordinates={coordinates}
+                  setCoordinates={setCoordinates}
+                />
+                <Stack spacing={10}>
+                  <Button
+                    loadingText="Submitting"
+                    size="lg"
+                    colorScheme="green"
+                    type="button"
+                    onClick={register}
+                    isLoading={loading}
+                  >
+                    Sign up
+                  </Button>
+                </Stack>
+              </Stack>
+            )}
+          </Box>
+        </Stack>
+
+        <Container maxW={2000}>
+          <Breadcrumb w="full">
+            <BreadcrumbItem>
+              <Text as="span" _hover={{ textDecor: "underline" }}>
+                <Navigate href="/">Home</Navigate>
+              </Text>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink>Register</BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Container>
+      </Stack>
     </>
   );
 }

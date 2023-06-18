@@ -5,6 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "react-query";
 import LoadUser from "@/components/utils/LoadUser";
+import NextNProgress from "nextjs-progressbar";
 
 export default function App({ Component, pageProps }) {
   const queryClient = new QueryClient();
@@ -14,6 +15,7 @@ export default function App({ Component, pageProps }) {
         <Provider store={store}>
           <Toaster />
           <LoadUser />
+          <NextNProgress color="#38A169" />
           <Component {...pageProps} />
         </Provider>
       </ChakraProvider>

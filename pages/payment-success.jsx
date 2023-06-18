@@ -7,9 +7,12 @@ import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function Page() {
   const router = useRouter();
+  const { token } = useSelector((state) => state.user);
+
   const paymentQuery = useQuery("payment/success", async () => {
     try {
       if (router.isReady) {
@@ -21,8 +24,7 @@ function Page() {
           },
           {
             headers: {
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDg2MTNiOTBlM2FmYTcxMjUxZGRjMGQiLCJpYXQiOjE2ODcwODQyNjEsImV4cCI6MTY4Nzk0ODI2MX0.MX0JYkwEr-ZQiNFio1NjKcyX_SUuqDtRvjvVFwzilds",
+              Authorization: `Bearer ${token}`,
             },
           }
         );

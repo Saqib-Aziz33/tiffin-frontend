@@ -16,6 +16,10 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Container,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -69,7 +73,7 @@ export default function Page() {
       <Head>
         <title>Tiffin | Login</title>
       </Head>
-      <Flex
+      <Stack
         minH={"100vh"}
         align={"center"}
         justify={"center"}
@@ -93,7 +97,7 @@ export default function Page() {
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>
                 <Input
-                  _focus={{ borderColor: "green" }}
+                  _focus={{ borderColor: "green", boxShadow: "none" }}
                   type="email"
                   {...formik.getFieldProps("email")}
                 />
@@ -106,7 +110,7 @@ export default function Page() {
               <FormControl id="password">
                 <FormLabel>Password</FormLabel>
                 <Input
-                  _focus={{ borderColor: "green" }}
+                  _focus={{ borderColor: "green", boxShadow: "none" }}
                   type="password"
                   {...formik.getFieldProps("password")}
                 />
@@ -135,7 +139,21 @@ export default function Page() {
             </Stack>
           </Box>
         </Stack>
-      </Flex>
+
+        <Container maxW={2000}>
+          <Breadcrumb w="full">
+            <BreadcrumbItem>
+              <Text as="span" _hover={{ textDecor: "underline" }}>
+                <Navigate href="/">Home</Navigate>
+              </Text>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink>Login</BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Container>
+      </Stack>
     </>
   );
 }

@@ -46,8 +46,8 @@ export default function SelLocation({ coordinates, setCoordinates }) {
       style={{
         height: "400px",
         width: "100%",
-        borderRadius: "20px",
-        boxShadow: "0 0 10px 0 rgb(0,0,0,0.1)",
+        borderRadius: "10px",
+        boxShadow: "0 0 5px 0 rgb(0,0,0,0.1)",
       }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
     >
