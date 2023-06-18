@@ -75,8 +75,7 @@ export default function Packages({ packages }) {
           Plans that fit your need
         </Heading>
         <Text fontSize="lg" color={"gray.500"}>
-          Start with 14-day free trial. No credit card needed. Cancel at
-          anytime.
+          Start with any offer that suites your need.
         </Text>
       </VStack>
 

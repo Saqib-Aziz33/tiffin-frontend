@@ -14,8 +14,8 @@ export default function App({ Component, pageProps }) {
       <ChakraProvider>
         <Provider store={store}>
           <Toaster />
-          <LoadUser />
           <NextNProgress color="#38A169" />
+          <LoadUser />
           <Component {...pageProps} />
         </Provider>
       </ChakraProvider>

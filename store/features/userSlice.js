@@ -1,3 +1,4 @@
+import { local } from "@/lib/constants";
 import { toast } from "react-hot-toast";
 
 const { createSlice } = require("@reduxjs/toolkit");
@@ -11,7 +12,7 @@ const userSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      localStorage.setItem(local.user, JSON.stringify(action.payload));
 
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -19,10 +20,18 @@ const userSlice = createSlice({
     },
     logout: (state) => {
       toast.success("Good Bye");
-      localStorage.removeItem("user");
+      localStorage.removeItem(local.user);
       state.user = null;
       state.token = null;
       state.isLogin = false;
+    },
+    // provide updated user object from responce
+    updateProfile: (state, action) => {
+      localStorage.setItem(
+        local.user,
+        JSON.stringify({ token: state.token, user: action.payload })
+      );
+      state.user = action.payload;
     },
     // load from local stroage
     loadUser: (state, action) => {
@@ -33,6 +42,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout, loadUser } = userSlice.actions;
+export const { login, logout, loadUser, updateProfile } = userSlice.actions;
 
 export default userSlice.reducer;

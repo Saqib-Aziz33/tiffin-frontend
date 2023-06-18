@@ -128,7 +128,7 @@ export default function Page() {
               <Stack spacing={4} as={"form"} onSubmit={formik.handleSubmit}>
                 <HStack>
                   <Box>
-                    <FormControl id="firstName">
+                    <FormControl id="name">
                       <FormLabel>Name</FormLabel>
                       <Input
                         _focus={{ borderColor: "green", boxShadow: "none" }}
@@ -143,7 +143,7 @@ export default function Page() {
                     </FormControl>
                   </Box>
                   <Box>
-                    <FormControl id="lastName">
+                    <FormControl id="phone">
                       <FormLabel>Phone</FormLabel>
                       <Input
                         _focus={{ borderColor: "green", boxShadow: "none" }}
