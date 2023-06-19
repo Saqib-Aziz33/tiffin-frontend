@@ -14,6 +14,7 @@ import { CgProfile } from "react-icons/cg";
 import { GiMeal } from "react-icons/gi";
 import withUserAuth from "@/components/utils/withUserAuth";
 import Subscriptions from "@/components/profile/Subscriptions";
+import SelectMeal from "@/components/profile/SelectMeal";
 import ProfileUpdate from "@/components/profile/ProfileUpdate";
 import { useSelector } from "react-redux";
 
@@ -53,7 +54,7 @@ function Page() {
             {user ? (
               <TabPanels>
                 <TabPanel>
-                  <p>one!</p>
+                  <SelectMeal />
                 </TabPanel>
                 <TabPanel>
                   <ProfileUpdate />
