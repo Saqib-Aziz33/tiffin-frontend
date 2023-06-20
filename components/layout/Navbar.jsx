@@ -34,8 +34,9 @@ function Navbar() {
       <Container maxW={2000} py={2}>
         <HStack alignItems={"center"} justify={"space-between"}>
           <Link href="/">
+            {/* logo */}
             <HStack gap={{ base: 0, md: 2 }}>
-              <Image height={100} width={50} src="/assets/tiffin.png" />
+              <Image height={100} width={50} src="/assets/tiffin.png" alt="" />
               <Heading
                 fontFamily={"'Kaushan Script', cursive"}
                 letterSpacing={3}

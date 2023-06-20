@@ -8,12 +8,14 @@ import {
   Button,
   Image,
   Icon,
-  IconButton,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function Hero() {
+  const { isLogin } = useSelector(state => state.user)
+
   return (
     <Container maxW={"7xl"}>
       <Stack
@@ -65,7 +67,7 @@ export default function Hero() {
               px={6}
               colorScheme={"green"}
             >
-              <Link href="/login">Get started</Link>
+              <Link href={isLogin ? '/profile' : "/login"}>Get started</Link>
             </Button>
             <Button
               as="a"

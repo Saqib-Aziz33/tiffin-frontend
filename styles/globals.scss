@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // css restore
 * {
   font-family: "Lato", sans-serif;
