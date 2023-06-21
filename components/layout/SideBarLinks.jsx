@@ -1,4 +1,4 @@
-import { Flex, Icon } from "@chakra-ui/react";
+import { Flex, Icon, useColorModeValue } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiHome, FiUsers } from "react-icons/fi";
@@ -56,7 +56,9 @@ const NavItem = ({ icon, to, children, ...rest }) => {
           bg: "green.400",
           color: "white",
         }}
-        color={router.asPath == to ? "white" : "black"}
+        color={
+          router.asPath == to ? "white" : useColorModeValue("black", "white")
+        }
         bg={router.asPath == to ? "green.400" : ""}
         {...rest}
       >

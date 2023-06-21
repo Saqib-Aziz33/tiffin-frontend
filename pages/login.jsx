@@ -1,10 +1,9 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 import Head from "next/head";
 import Navigate from "next/link";
-import axios from "axios";
 import {
-  Flex,
   Box,
   FormControl,
   FormLabel,
@@ -128,9 +127,10 @@ export default function Page() {
                 >
                   <Checkbox colorScheme="green">Remember me</Checkbox>
                   <Text as="span" color={"green.400"}>
-                    <Navigate href="/register">Not have an account?</Navigate>
+                    <Navigate href="/forgot-password">
+                      Forgot password?
+                    </Navigate>
                   </Text>
-                  {/* <Link color={"blue.400"}>Forgot password?</Link> */}
                 </Stack>
                 <Button colorScheme="green" isLoading={loading} type="submit">
                   Sign in

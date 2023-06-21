@@ -8,12 +8,6 @@ import { Box } from "@chakra-ui/react";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
-/**
- *
- * @param {Object} coordinates, {lat, lng}
- * @param {Function} setCoordinates, useState setter for coordinates
- * @returns
- */
 export default function SelLocation({ coordinates, setCoordinates }) {
   const [selectedLocation, setSelectedLocation] = useState({
     latitude: coordinates.lat,
@@ -50,7 +44,7 @@ export default function SelLocation({ coordinates, setCoordinates }) {
         });
       }}
       style={{
-        height: "400px",
+        height: "300px",
         width: "100%",
         borderRadius: "10px",
         boxShadow: "0 0 5px 0 rgb(0,0,0,0.1)",

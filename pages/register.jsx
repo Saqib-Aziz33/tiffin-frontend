@@ -63,7 +63,7 @@ export default function Page() {
           });
         }
       } catch (e) {
-        toast.error(e.message);
+        toast.error(e.response.data.message);
       } finally {
         setLoading(false);
       }

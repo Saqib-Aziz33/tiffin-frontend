@@ -1,3 +1,4 @@
+import AllBranches from "@/components/branches/AllBranches";
 import AdminLayout from "@/components/layout/AdminLayout";
 import AllowedRole from "@/components/utils/AllowedRole";
 import Head from "next/head";
@@ -12,7 +13,9 @@ function Page() {
         <title>Tiffin | Admin</title>
       </Head>
       <AdminLayout>
-        <AllowedRole role={roles?.Admin}>page</AllowedRole>
+        <AllowedRole role={roles?.Admin}>
+          <AllBranches />
+        </AllowedRole>
       </AdminLayout>
     </>
   );
