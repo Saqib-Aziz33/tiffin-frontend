@@ -18,23 +18,24 @@ import { useSelector } from "react-redux";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { AiFillDelete } from "react-icons/ai";
 import { toast } from "react-hot-toast";
-import NewUser from "./NewUser";
+import NewMeal from "./NewMeal";
+import EditMeal from "./EditMeal";
 
-function ListAll() {
+function Meals() {
   const { token } = useSelector((state) => state.admin);
   const queryClient = useQueryClient();
 
-  const adminQuery = useQuery("admin/get-all", async () => {
+  const mealQuery = useQuery("meals/get-all", async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE}/admin`,
+        `${process.env.NEXT_PUBLIC_API_BASE}/meals`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      return data.users;
+      return data.meals;
     } catch (e) {
       throw e.response.data;
     }
@@ -43,38 +44,22 @@ function ListAll() {
   const deleteQuery = useMutation(async (id) => {
     try {
       const { data } = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE}/admin/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE}/meals/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      toast.success(data.message);
-      queryClient.invalidateQueries("admin/get-all");
+      toast.success("Meal deleted");
+      queryClient.invalidateQueries("meals/get-all");
     } catch (e) {
       toast.error(e.response.data.messasge);
       throw e.response.data;
     }
   });
 
-  const branchQuery = useQuery("branches/admin-required", async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE}/branches/admin-required`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return data.branches;
-    } catch (e) {
-      throw e.response.data;
-    }
-  });
-
-  if (adminQuery.isLoading) {
+  if (mealQuery.isLoading) {
     return (
       <Center>
         <Spinner color="green" size="xl" />
@@ -82,13 +67,13 @@ function ListAll() {
     );
   }
 
-  if (adminQuery.isError) {
-    return <Text textAlign="center">{adminQuery.error.message}</Text>;
+  if (mealQuery.isError) {
+    return <Text textAlign="center">{mealQuery.error.message}</Text>;
   }
 
   return (
     <>
-      {branchQuery.isSuccess ? <NewUser branches={branchQuery.data} /> : null}
+      <NewMeal />
       <Box>
         <TableContainer>
           <Table size="sm" variant="striped" colorScheme="blackAlpha">
@@ -96,26 +81,22 @@ function ListAll() {
             <Thead bg={"green.200"}>
               <Tr>
                 <Th>Name</Th>
-                <Th>Email</Th>
-                <Th>Role</Th>
-                <Th>Branch</Th>
+                <Th>Description</Th>
                 <Th>Actions</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {adminQuery.data.map((user) => (
-                <Tr key={user._id}>
-                  <Td>{user.name}</Td>
-                  <Td>{user.email}</Td>
-                  <Td>{user.role.name}</Td>
-                  <Td>{user.branch?.name || "N/A"}</Td>
+              {mealQuery.data.map((item) => (
+                <Tr key={item._id}>
+                  <Td>{item.name}</Td>
+                  <Td>{item.description}</Td>
                   <Td>
                     <IconButton
                       onClick={() => {
                         const del = window.confirm(
-                          `Sure you want to delete ${user.name}`
+                          `Sure you want to delete ${item.name}`
                         );
-                        if (del) deleteQuery.mutate(user._id);
+                        if (del) deleteQuery.mutate(item._id);
                       }}
                       colorScheme="red"
                       variant={"ghost"}
@@ -123,6 +104,7 @@ function ListAll() {
                       size="sm"
                       isLoading={deleteQuery.isLoading}
                     />
+                    <EditMeal meal={item} />
                   </Td>
                 </Tr>
               ))}
@@ -134,4 +116,4 @@ function ListAll() {
   );
 }
 
-export default ListAll;
+export default Meals;
