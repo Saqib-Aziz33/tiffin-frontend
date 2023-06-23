@@ -14,14 +14,23 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useMutation } from "react-query";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 export default function Page() {
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
-      email: "",
+      password: "",
+      confirmPassword: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email().required("Email is required"),
+      password: Yup.string()
+        .required("Password is required")
+        .min(6, "Password must be at least 6 characters long"),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .required("Confirm Password is required"),
     }),
     onSubmit: (values) => {
       sendRequestQuery.mutate();
@@ -30,11 +39,12 @@ export default function Page() {
 
   const sendRequestQuery = useMutation(async () => {
     try {
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE}/users/forgot/password`,
-        formik.values
+      const { data } = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASE}/users/password/reset/${router.query.token}`,
+        { password: formik.values.password }
       );
       toast.success(data.message);
+      router.push("/login");
     } catch (e) {
       toast.error(e.response.data.message);
     }
@@ -65,25 +75,40 @@ export default function Page() {
           onSubmit={formik.handleSubmit}
         >
           <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
-            Forgot your password?
+            Reset your password
           </Heading>
           <Text
             fontSize={{ base: "sm", sm: "md" }}
             color={useColorModeValue("gray.800", "gray.400")}
           >
-            You&apos;ll get an email with a reset link
+            Enter your new password
           </Text>
-          <FormControl id="email">
+          <FormControl id="password">
             <Input
-              placeholder="your-email@example.com"
+              placeholder="New password"
               _placeholder={{ color: "gray.500" }}
               _focus={{ borderColor: "green", boxShadow: "none" }}
-              type="email"
-              {...formik.getFieldProps("email")}
+              type="password"
+              {...formik.getFieldProps("password")}
             />
-            {formik.touched.email && formik.errors.email ? (
+            {formik.touched.password && formik.errors.password ? (
               <Text color="red.400" fontSize={12}>
-                {formik.errors.email}
+                {formik.errors.password}
+              </Text>
+            ) : null}
+          </FormControl>
+
+          <FormControl id="cpass">
+            <Input
+              placeholder="Confirm password"
+              _placeholder={{ color: "gray.500" }}
+              _focus={{ borderColor: "green", boxShadow: "none" }}
+              type="password"
+              {...formik.getFieldProps("confirmPassword")}
+            />
+            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+              <Text color="red.400" fontSize={12}>
+                {formik.errors.confirmPassword}
               </Text>
             ) : null}
           </FormControl>
@@ -94,7 +119,7 @@ export default function Page() {
               onClick={formik.handleSubmit}
               isLoading={sendRequestQuery.isLoading}
             >
-              Request Reset
+              Reset
             </Button>
           </Stack>
         </Stack>
