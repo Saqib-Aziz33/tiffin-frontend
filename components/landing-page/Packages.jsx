@@ -81,6 +81,7 @@ export default function Packages({ packages }) {
 
       <Stack
         direction={{ base: "column", md: "row" }}
+        flexWrap={"wrap"}
         textAlign="center"
         justify="center"
         spacing={{ base: 4, lg: 10 }}
