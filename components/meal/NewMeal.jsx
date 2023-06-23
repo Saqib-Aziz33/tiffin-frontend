@@ -21,6 +21,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { FiUserPlus } from "react-icons/fi";
+import { AiOutlinePlus } from "react-icons/ai";
 
 function NewMeal() {
   const { token } = useSelector((state) => state.admin);
@@ -68,7 +69,7 @@ function NewMeal() {
   return (
     <>
       <Button
-        leftIcon={<FiUserPlus />}
+        leftIcon={<AiOutlinePlus />}
         mb={4}
         colorScheme="green"
         display={"block"}

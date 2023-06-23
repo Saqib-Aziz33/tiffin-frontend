@@ -1,21 +1,19 @@
 import {
   Center,
-  Container,
   HStack,
   Heading,
   Spinner,
   Stack,
   Text,
-  VStack,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
 function SelectMeal() {
   const { token } = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
 
   const mealQuery = useQuery("getTodayMeal", async () => {
     try {
@@ -43,7 +41,7 @@ function SelectMeal() {
       );
       if (data.success) {
         toast.success("Thank you");
-        mealQuery.refetch();
+        queryClient.invalidateQueries("getTodayMeal");
       }
     } catch (e) {
       toast.error(e.response.data);

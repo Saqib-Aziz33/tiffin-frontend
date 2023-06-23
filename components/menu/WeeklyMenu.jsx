@@ -42,6 +42,22 @@ function Menus() {
     }
   });
 
+  const mealQuery = useQuery("meals/get-all", async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE}/meals`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return data.meals;
+    } catch (e) {
+      throw e.response.data;
+    }
+  });
+
   //   const deleteQuery = useMutation(async (id) => {
   //     try {
   //       const { data } = await axios.delete(
@@ -74,7 +90,7 @@ function Menus() {
 
   return (
     <>
-      <NewMenu />
+      {mealQuery.isSuccess ? <NewMenu menus={mealQuery.data} /> : null}
       <Box>
         <TableContainer>
           <Table size="sm" variant="striped" colorScheme="blackAlpha">
@@ -94,7 +110,7 @@ function Menus() {
             <Tbody>
               {menuQuery.data.map((item) => (
                 <Tr key={item._id}>
-                  <Td title={item._id}>{item._id.slice(0, 4)}</Td>
+                  <Td title={item._id}>{item._id.slice(0, 8)}</Td>
                   <Td>
                     <UnorderedList>
                       {item.monday.map((i) => (

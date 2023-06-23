@@ -9,44 +9,40 @@ import {
   Button,
   useDisclosure,
   Stack,
-  FormControl,
-  FormLabel,
   Text,
-  Input,
 } from "@chakra-ui/react";
-import * as Yup from "yup";
-import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { FiUserPlus } from "react-icons/fi";
+import Select from "react-select";
+import { useState } from "react";
+import { AiOutlinePlus } from "react-icons/ai";
 
-function NewMenu() {
+function NewMenu({ menus }) {
   const { token } = useSelector((state) => state.admin);
   const queryClient = useQueryClient();
+  // create options format
+  const options = menus.map((item) => ({ value: item._id, label: item.name }));
+
+  // selected menu
+  const initialState = {
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+  };
+  const [menu, setMenu] = useState(initialState);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      description: "",
-    },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Name is required").min(3),
-      description: Yup.string().required("Description is required").min(10),
-    }),
-    onSubmit: (values) => {
-      createQuery.mutate();
-    },
-  });
-
-  const createQuery = useMutation(async () => {
+  const createQuery = useMutation(async (menuData) => {
     try {
       const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE}/meals`,
-        formik.values,
+        `${process.env.NEXT_PUBLIC_API_BASE}/weekly-menu`,
+        menuData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -54,11 +50,11 @@ function NewMenu() {
         }
       );
       if (data.success) {
-        toast.success("Meal Created");
-        formik.resetForm();
+        toast.success("Menu Created");
         onClose();
         // refetch latest data
-        queryClient.invalidateQueries("meals/get-all");
+        setMenu(initialState);
+        queryClient.invalidateQueries("weekly-menu/get-all");
       }
     } catch (e) {
       toast.error(e.response.data.message);
@@ -68,49 +64,95 @@ function NewMenu() {
   return (
     <>
       <Button
-        leftIcon={<FiUserPlus />}
+        leftIcon={<AiOutlinePlus />}
         mb={4}
         colorScheme="green"
         display={"block"}
         ml={"auto"}
         onClick={onOpen}
       >
-        Meal
+        Menu
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>New Meal</ModalHeader>
+          <ModalHeader>Weekly menu</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack spacing={1}>
-              <FormControl id="name">
-                <FormLabel>Name</FormLabel>
-                <Input
-                  _focus={{ borderColor: "green", boxShadow: "none" }}
-                  type="text"
-                  {...formik.getFieldProps("name")}
+              <Stack id="menu-monday">
+                <Text>Monday</Text>
+                <Select
+                  defaultValue={menu.monday}
+                  isMulti
+                  name="monday"
+                  onChange={(value) => setMenu({ ...menu, monday: value })}
+                  options={options}
+                  className="basic-multi-select"
+                  classNamePrefix="monday"
                 />
-                {formik.touched.name && formik.errors.name ? (
-                  <Text color="red.400" fontSize={12}>
-                    {formik.errors.name}
-                  </Text>
-                ) : null}
-              </FormControl>
-              <FormControl id="description">
-                <FormLabel>Description</FormLabel>
-                <Input
-                  _focus={{ borderColor: "green", boxShadow: "none" }}
-                  type="text"
-                  {...formik.getFieldProps("description")}
+              </Stack>
+              <Stack id="menu-tuesday">
+                <Text>Tuesday</Text>
+                <Select
+                  defaultValue={menu.tuesday}
+                  isMulti
+                  name="monday"
+                  onChange={(value) => setMenu({ ...menu, tuesday: value })}
+                  options={options}
+                  className="basic-multi-select"
+                  classNamePrefix="monday"
                 />
-                {formik.touched.description && formik.errors.description ? (
-                  <Text color="red.400" fontSize={12}>
-                    {formik.errors.description}
-                  </Text>
-                ) : null}
-              </FormControl>
+              </Stack>
+              <Stack id="menu-wednesday">
+                <Text>Wednesday</Text>
+                <Select
+                  defaultValue={menu.wednesday}
+                  isMulti
+                  name="monday"
+                  onChange={(value) => setMenu({ ...menu, wednesday: value })}
+                  options={options}
+                  className="basic-multi-select"
+                  classNamePrefix="monday"
+                />
+              </Stack>
+              <Stack id="menu-thursday">
+                <Text>Thursday</Text>
+                <Select
+                  defaultValue={menu.thursday}
+                  isMulti
+                  name="monday"
+                  onChange={(value) => setMenu({ ...menu, thursday: value })}
+                  options={options}
+                  className="basic-multi-select"
+                  classNamePrefix="monday"
+                />
+              </Stack>
+              <Stack id="menu-friday">
+                <Text>Friday</Text>
+                <Select
+                  defaultValue={menu.friday}
+                  isMulti
+                  name="friday"
+                  onChange={(value) => setMenu({ ...menu, friday: value })}
+                  options={options}
+                  className="basic-multi-select"
+                  classNamePrefix="monday"
+                />
+              </Stack>
+              <Stack id="menu-saturday">
+                <Text>Saturday</Text>
+                <Select
+                  defaultValue={menu.saturday}
+                  isMulti
+                  name="saturday"
+                  onChange={(value) => setMenu({ ...menu, saturday: value })}
+                  options={options}
+                  className="basic-multi-select"
+                  classNamePrefix="monday"
+                />
+              </Stack>
             </Stack>
           </ModalBody>
 
@@ -121,7 +163,15 @@ function NewMenu() {
             <Button
               colorScheme="green"
               isLoading={createQuery.isLoading}
-              onClick={formik.handleSubmit}
+              onClick={() => {
+                const convertedData = {};
+                for (const key in menu) {
+                  if (menu.hasOwnProperty(key)) {
+                    convertedData[key] = menu[key].map((item) => item.value);
+                  }
+                }
+                createQuery.mutate(convertedData);
+              }}
             >
               Create
             </Button>
