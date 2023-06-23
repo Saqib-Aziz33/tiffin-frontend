@@ -21,9 +21,9 @@ const adminSlice = createSlice({
     logout: (state) => {
       toast.success("Good Bye");
       localStorage.removeItem(local.admin);
-      state.user = null;
-      state.token = null;
-      state.isLogin = false;
+      // state.user = null;
+      // state.token = null;
+      // state.isLogin = false;
     },
     // provide updated user object from responce
     updateProfile: (state, action) => {
