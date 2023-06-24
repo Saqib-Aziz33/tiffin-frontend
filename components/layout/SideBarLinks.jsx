@@ -12,26 +12,33 @@ function SideBarLinks() {
   const { user } = useSelector((state) => state.admin);
   const { roles } = useSelector((state) => state.roles);
 
-  return (
+  return user.role !== roles.Admin ? (
     <>
       <NavItem to="/admin" icon={FiHome}>
         Home
       </NavItem>
 
-      <NavItem to="/admin/branches" icon={GiFireplace}>
-        Branches
-      </NavItem>
+      {user.role === roles.BranchAdmin && (
+        <NavItem to="/admin/users" icon={GrUserAdmin}>
+          Users
+        </NavItem>
+      )}
 
-      <NavItem to="/admin/users" icon={GrUserAdmin}>
-        Users
+      <NavItem to="/admin/menu" icon={GiOpenedFoodCan}>
+        Menu
       </NavItem>
-
+    </>
+  ) : (
+    <>
+      <NavItem to="/admin" icon={FiHome}>
+        Home
+      </NavItem>
       <NavItem to="/admin/meal" icon={GiMeal}>
         Meal
       </NavItem>
 
-      <NavItem to="/admin/menu" icon={GiOpenedFoodCan}>
-        Menu
+      <NavItem to="/admin/branches" icon={GiFireplace}>
+        Branches
       </NavItem>
 
       <NavItem to="/admin/packages" icon={GoPackage}>
