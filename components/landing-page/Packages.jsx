@@ -11,11 +11,8 @@ import {
   ListIcon,
   Button,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
 import { FaCheckCircle } from "react-icons/fa";
-import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
 
 function PriceWrapper({ children }) {
@@ -38,35 +35,9 @@ export default function Packages({ packages }) {
   const { token, isLogin } = useSelector((state) => state.user);
   const router = useRouter();
 
-  const purchaseQuery = useMutation(async (packageId) => {
-    try {
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE}/users/create-checkout-session`,
-        {
-          package: packageId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (!data.success) {
-        toast.error("Something went wrong");
-      }
-      window.location.href = data.url;
-    } catch (e) {
-      toast.error(e.response.data.message);
-      throw e.response.data;
-    }
-  });
-
-  const handleGetStarted = (packageId) => {
-    if (!isLogin) {
-      toast("Login required");
-      return router.push("/login");
-    }
-    purchaseQuery.mutate(packageId);
+  const handleGetStarted = (id) => {
+    if (!isLogin) return router.push("/login");
+    router.push(`/checkout/${id}`);
   };
 
   return (
@@ -151,7 +122,6 @@ export default function Packages({ packages }) {
                     colorScheme="green"
                     variant={item.popular ? "solid" : "outline"}
                     onClick={() => handleGetStarted(item._id)}
-                    isLoading={purchaseQuery.isLoading}
                   >
                     Get started
                   </Button>

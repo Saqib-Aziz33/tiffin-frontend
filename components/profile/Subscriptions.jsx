@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { booleanConvertor } from "@/lib/helper";
+import { FiExternalLink } from "react-icons/fi";
 
 function Subscriptions() {
   const { token } = useSelector((state) => state.user);
@@ -71,6 +72,7 @@ function Subscriptions() {
               <Th>From</Th>
               <Th>To</Th>
               <Th>Active</Th>
+              <Th>Receipt</Th>
               <Th isNumeric>Amout</Th>
             </Tr>
           </Thead>
@@ -83,6 +85,11 @@ function Subscriptions() {
                   {booleanConvertor(
                     moment(item.to).isAfter(moment(new Date()))
                   )}
+                </Td>
+                <Td>
+                  <a href={item.bill.receipt} target="_blank">
+                    <FiExternalLink />
+                  </a>
                 </Td>
                 <Td isNumeric>{item.bill.amount}</Td>
               </Tr>
