@@ -27,6 +27,7 @@ function PriceWrapper({ children }) {
       alignSelf={{ base: "center", lg: "flex-start" }}
       borderColor={useColorModeValue("gray.200", "gray.500")}
       borderRadius={"xl"}
+      maxW={320}
     >
       {children}
     </Box>
@@ -128,6 +129,9 @@ export default function Packages({ packages }) {
                   </Text>
                 </HStack>
               </Box>
+              <Text fontSize="sm" fontWeight="400" px={2}>
+                {item.description}
+              </Text>
               <VStack
                 bg={useColorModeValue("gray.50", "gray.700")}
                 py={4}
